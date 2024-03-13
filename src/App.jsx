@@ -3,12 +3,15 @@ import AddressInfo from "./components/AddressInfo";
 import Search from "./components/Search";
 import MapCompnent from "./components/MapCompnent";
 import { useState } from "react";
+import useFetch from "./components/useFetch";
 
 function App() {
 	const [ip, setIp] = useState("");
 	function setNewIp() {
 		setIp(event.target.value);
 	}
+
+	const { data, isLoading, error } = useFetch(`https://ipapi.co/${ip}/json/`);
 	return (
 		<section>
 			<section className="top">
@@ -17,9 +20,17 @@ function App() {
 					ip={ip}
 					setNewIp={setNewIp}
 				/>
-				<AddressInfo ip={ip} />
+				<AddressInfo
+					data={data}
+					isLoading={isLoading}
+					error={error}
+				/>
 			</section>
-			<MapCompnent />
+			<MapCompnent
+				isLoading={isLoading}
+				data={data}
+				error={error}
+			/>
 		</section>
 	);
 }
